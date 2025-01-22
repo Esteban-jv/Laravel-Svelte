@@ -1,6 +1,4 @@
 <script>
-    import { page } from '@inertiajs/svelte'
-    import { Link} from "@inertiajs/svelte"; // Instead of a custom Link component
     import { format, formatDate } from 'date-fns'
     // import spanish locale for date-fns
     import { es } from 'date-fns/locale'
@@ -9,6 +7,8 @@
     // for maps
     import * as L from 'leaflet';
     import 'leaflet/dist/leaflet.css';
+    // Header
+    import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.svelte";
     // Custom Calendar
     import Calendar from "@/Components/Calendar.svelte";
 
@@ -41,11 +41,13 @@
         format(startDate, "EEEE dd 'de' MMMM yyyy", {
             locale: es
         })
-    )/*
+    )
+    /*
     let dateFormat = 'MM/dd/yy';
     let formattedStartDate = formatDate(startDate);
     let isOpen = false;
-    const toggleDatePicker = () => (isOpen = !isOpen);*/
+    const toggleDatePicker = () => (isOpen = !isOpen);
+    */
 
     // for maps
     let map;
@@ -91,62 +93,29 @@
         };
     }
 </script>
-<div class="navbar bg-base-100 shadow-sm">
-    <div class="flex-1">
-        <a class="btn btn-ghost text-xl">daisyUI</a>
-    </div>
-    <div class="flex-none gap-2">
-        <div class="form-control">
-            <h2>{$page.props.auth.user.name}</h2>
-        </div>
-        <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                <div class="w-10 rounded-full">
-                    <img
-                        alt="Tailwind CSS Navbar component"
-                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
+<AuthenticatedLayout>
+    <main class="mx-auto">
+        <div class="mb-2">
+            <h2 class="text-2xl text-orange-500 font-bold">Svelte 5</h2>
+            <span>{dateFormatted}</span>
+
+            <!-- make a tailwindcss calendar -->
+            <div class="mt-5">
+                <Calendar />
             </div>
-            <ul
-                tabindex="0"
-                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                <li>
-                    <a class="justify-between">
-                        Profile
-                        <span class="badge">New</span>
-                    </a>
-                </li>
-                <li><a>Settings</a></li>
-                <li><Link
-                    href="/logout"
-                    method="post"
-                    as="button"
-                >Logout</Link ></li>
-            </ul>
+
+            <!-- jquery calendar -->
+            <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="mt-5 bg-blue-400" /> <!-- Not working -->
+
+            <!-- svelte calendar -->
+<!--            <DatePicker bind:isOpen bind:startDate>-->
+<!--                <input type="text" placeholder="Select date" bind:value={formattedStartDate} on:click={toggleDatePicker} />-->
+<!--            </DatePicker>-->
+
+            <!-- map grid -->
+            <div class="mt-72" style="height:600px; width:800px">
+                <div class="py-10" style="height: 600px;" use:mapAction />
+            </div>
         </div>
-    </div>
-</div>
-<main class="mx-auto">
-    <div class="m-4 mb-2">
-        <h2 class="text-2xl text-orange-500 font-bold">Svelte 5</h2>
-        <span>{dateFormatted}</span>
-
-        <!-- make a tailwindcss calendar -->
-        <div class="mt-5">
-            <Calendar />
-        </div>
-
-        <!-- jquery calendar -->
-        <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="mt-5 bg-blue-400" /> <!-- Not working -->
-
-        <!-- svelte calendar -->
-<!--        <DatePicker bind:isOpen bind:startDate>-->
-<!--            <input type="text" placeholder="Select date" bind:value={formattedStartDate} on:click={toggleDatePicker} />-->
-<!--        </DatePicker>-->
-
-        <!-- map grid -->
-        <div class="mt-72" style="height:600px; width:800px">
-            <div class="py-10" style="height: 600px;" use:mapAction />
-        </div>
-    </div>
-</main>
+    </main>
+</AuthenticatedLayout>

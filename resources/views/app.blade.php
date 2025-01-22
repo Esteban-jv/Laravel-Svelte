@@ -22,7 +22,22 @@
         @vite(['resources/js/app.js','resources/css/app.css'])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    @php
+        $hostname = $_SERVER['SERVER_NAME'];
+        echo "<!-- Hostname: $hostname -->";
+        switch ($hostname) {
+            case '127.0.0.1':
+                $theme = 'custom1';
+                break;
+            case 'mywebsite.com':
+                $theme = 'custom2';
+                break;
+            default:
+                $theme = 'custom1';
+                break;
+        }
+    @endphp
+    <body class="font-sans antialiased h-screen" data-theme="{{$theme}}">
         @inertia
     </body>
 </html>
