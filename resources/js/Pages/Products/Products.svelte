@@ -14,6 +14,7 @@
         price: 0,
         stock: 0
     })
+    // [...new Array(length_to_populate_to)].map((_, i) => (i+1)) // In case you need to populate an array with numbers
 
     // Methods
 
@@ -33,6 +34,12 @@
     const hideModal = () => {
         showModal = false
     }
+
+    const goToLink = (url) => {
+        if (url) {
+            router.visit(url)
+        }
+    }
 </script>
 <AuthenticatedLayout>
     <h1 class="text-2xl font-semibold">Products {showModal}</h1>
@@ -42,31 +49,62 @@
         </button>
     </div>
 
-    <div class="p">
+    <div class="mx-4">
         <div class="overflow-x-auto">
             <table class="table table-zebra">
                 <!-- head -->
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Title</th>
-                    <th>Description</th>
                     <th>Price</th>
-                    <th>Stocl</th>
+                    <th>Stock</th>
                 </tr>
                 </thead>
                 <tbody>
-                {#each products as product}
+                {#each products.data as product}
                     <tr>
-                        <th>{product.id}</th>
-                        <td>{product.title}</td>
-                        <td>{product.description}</td>
-                        <td>{product.price}</td>
-                        <td>{product.stock}</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle h-12 w-12">
+                                        <img
+                                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                                            alt="Avatar Tailwind CSS Component" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">{product.title}</div>
+                                    <div class="text-sm opacity-50">{product.description}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="font-bold">
+                                {product.price}
+                            </div>
+                        </td>
+                        <td>
+                            <input type="number" name="stock" class="input" bind:value={product.stock}>
+                        </td>
                     </tr>
                 {/each}
                 </tbody>
             </table>
+        </div>
+        <div class="flex justify-end mt-4">
+            <div class="join">
+                {#each products.links as link }
+                    <input
+                        class="join-item btn btn-square"
+                        type="radio"
+                        name="options"
+                        aria-label="{link.label}"
+                        checked={link.active}
+                        disabled={link.active || link.url == null}
+                        on:click="{() => goToLink(link.url)}"
+                    />
+                {/each}
+            </div>
         </div>
     </div>
 

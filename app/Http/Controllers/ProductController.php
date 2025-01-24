@@ -14,8 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-//        dd("S");
-        $products = Product::all();
+        $products = Product::paginate(4);
         return Inertia::render('Products/Products', [
             'products' => $products,
         ]);

@@ -23,6 +23,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:3'],
+            'description' => ['string'], // This is needed despite being nullable
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
         ];
