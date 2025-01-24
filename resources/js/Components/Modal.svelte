@@ -8,14 +8,16 @@
     // Watchers
     $effect(() => {
         if (showModal) dialog.showModal();
+        else dialog.close();
     })
 </script>
 
 <dialog
     class="rounded-box shadow-md base-content"
     bind:this={dialog}
-    on:close={() => (showModal = false)}
-    on:click={ e => { if (e.target === dialog) dialog.close(); } }
+    onclose={() => (showModal = false)}
+    onclick={ e => { if (e.target === dialog) dialog.close(); } }
+    onkeyup="{e => { if (e.key === 'Escape') dialog.close(); }}"
 >
     <div class="min-w-[400px] p-2">
         {@render header?.() }
@@ -24,8 +26,8 @@
         <hr>
         <div class="flex justify-end mt-3">
             <!-- Svelte ifnore autofocus? -->
-            <button class="btn btn-ghost" autofocus
-                    on:click={() => dialog.close() }
+            <button class="btn btn-ghost"
+                    onclick={() => dialog.close() }
             >
                 Close
             </button>

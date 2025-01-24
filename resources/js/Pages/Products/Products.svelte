@@ -22,16 +22,20 @@
     }
     const handleSubmit = () => {
         $form.post('/products', {
+            preserveScroll: true,
             onSuccess: () => {
                 showModal = false
-                form.reset()
-                router.push('/products')
-            }
+                $form.reset()
+            },
         })
+    }
+
+    const hideModal = () => {
+        showModal = false
     }
 </script>
 <AuthenticatedLayout>
-    <h1 class="text-2xl font-semibold">Products</h1>
+    <h1 class="text-2xl font-semibold">Products {showModal}</h1>
     <div class="flex justify-end mt-4">
         <button class="btn btn-success" on:click="{openCreate}">
             Create
@@ -70,6 +74,7 @@
         {#snippet header()}
         <h2>
             Create new product
+            <button on:click={hideModal} >close</button>
         </h2>
         <hr>
         {/snippet}

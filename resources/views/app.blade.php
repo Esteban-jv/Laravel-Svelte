@@ -29,7 +29,7 @@
             case '127.0.0.1':
                 $theme = 'custom1';
                 break;
-            case 'mywebsite.com':
+            case 'localhost':
                 $theme = 'custom2';
                 break;
             default:
